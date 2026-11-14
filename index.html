@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>SMP Hand Signals Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root {
+  --bg: #fbfaf6; --surface: #ffffff; --sand: #efe7d6; --ink: #1d2a24; --muted: #5d6a63;
+  --line: #e2ddd0; --green: #1f5c43; --green-soft: #e3efe8; --amber: #8a5a12; --amber-soft: #f6ecd9;
+  --red: #9a3324; --red-soft: #f6e1dc;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif; --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141a17; --surface: #1b231f; --sand: #2a2a22; --ink: #e8ece9; --muted: #a2aea7; --line: #2f3a34;
+  --green: #7fc7a2; --green-soft: #1f3329; --amber: #e3b56a; --amber-soft: #3a2f1c; --red: #f0a090; --red-soft: #3d2420; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141a17; --surface: #1b231f; --sand: #2a2a22; --ink: #e8ece9; --muted: #a2aea7; --line: #2f3a34;
+  --green: #7fc7a2; --green-soft: #1f3329; --amber: #e3b56a; --amber-soft: #3a2f1c; --red: #f0a090; --red-soft: #3d2420; color-scheme: dark }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--font-body); }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 16px; }
+header { background: var(--sand); border-bottom: 3px solid var(--green); }
+header .wrap { padding-block: 28px 22px; display: grid; gap: 12px; }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; margin: 0; font-weight: 600; }
+h2 { font-size: 20px; margin: 28px 0 4px; font-weight: 600; }
+.lede { margin: 0; max-width: 68ch; color: var(--muted); }
+.tally { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.tally div { display: grid; } .tally b { font: 500 24px/1.1 var(--font-mono); color: var(--green); } .tally span { font-size: 13px; color: var(--muted); }
+main .wrap { padding-block: 8px 48px; display: grid; gap: 14px; }
+.how { background: var(--green-soft); border-radius: 8px; padding: 14px 16px; }
+.how ol { margin: 6px 0 0; padding-left: 20px; }
+article { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; display: grid; gap: 12px; min-width: 0; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; }
+.num { font: 500 13px var(--font-mono); color: var(--muted); }
+.lesson { font-weight: 600; }
+.tag { font-size: 12px; padding: 2px 8px; border-radius: 4px; background: var(--amber-soft); color: var(--amber); font-weight: 500; }
+.tag.ok { background: var(--green-soft); color: var(--green); } .tag.bad { background: var(--red-soft); color: var(--red); }
+h3 { margin: 0; font-size: 17px; font-weight: 600; }
+.cols { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 680px) { .cols { grid-template-columns: 1fr; } }
+video, .cols img { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); background: #000; display: block; }
+.cols img { background: var(--sand); }
+.label { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+ul.sig { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+ul.sig b { font-weight: 600; }
+.known { border-left: 3px solid var(--red); padding-left: 10px; font-size: 14px; }
+.verdict { border-top: 1px dashed var(--line); padding-top: 12px; display: grid; gap: 8px; }
+.choices { display: flex; gap: 8px; flex-wrap: wrap; }
+.choices button { font: inherit; font-size: 14px; font-weight: 600; border-radius: 6px; padding: 7px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.choices button[aria-pressed="true"][data-v="ok"] { background: var(--green); border-color: var(--green); color: var(--bg); }
+.choices button[aria-pressed="true"][data-v="change"] { background: var(--red); border-color: var(--red); color: var(--bg); }
+textarea, input { font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; width: 100%; min-width: 0; }
+textarea { min-height: 60px; resize: vertical; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.send { font: inherit; font-size: 13px; font-weight: 600; border-radius: 6px; padding: 7px 14px; cursor: pointer; border: 1px solid var(--green); background: var(--green); color: var(--bg); }
+.note { font-size: 12px; color: var(--muted); } .note.err { color: var(--red); }
+.thread { display: grid; gap: 6px; }
+.msg { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 14px; overflow-wrap: anywhere; }
+.msg .who { font-size: 12px; color: var(--muted); }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+footer .wrap { padding-block: 0 40px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="eyebrow">AFC27 · Stadium Marshal Programme · Review 1, comments #56, #57 and #65</div>
+  <h1>Check every hand signal</h1>
+  <p class="lede">Every hand signal shown to learners in the SMP lessons, with the wording each lesson teaches. Watch each clip and mark it <b>Correct</b> or <b>Needs change</b>. Your answers go straight to the team's review sheet.</p>
+  <div class="tally" id="tally"></div>
+</div></header>
+<main><div class="wrap">
+  <div class="how"><b>How to check</b><ol>
+    <li>Play the clip or look at the picture.</li>
+    <li>Compare the arms and hands with the wording beside it, which is what the lesson teaches.</li>
+    <li>Tap <b>Correct</b>, or <b>Needs change</b> and say what is wrong (for example "palm should face the driver"). Add your name and send.</li>
+  </ol></div>
+  <div id="list"></div>
+</div></main>
+<footer><div class="wrap">SMP 4.1, 8.1, 9.1 and 13.1 as they are in the course today, 14 November 2026. Clips marked "known issue" are already being remade; please check them anyway.</div></footer>
+<script>
+const ITEMS = [
+ { group: "SMP 4.1 · Communicating with crowds: three crowd signals", items: [
+  { key: "s41-g", lesson: "SMP 4.1", screen: "screen 2.1", title: "The three signals, side by side", media: "smp41-g-signals.jpg", kind: "img",
+    signals: [["STOP", "One arm straight out in front, open palm towards the people, held still. Say: 'Stop here please'."],
+              ["GO-MOVE", "An open-hand sweep of the whole arm towards the route, repeated. Say: 'This way please'."],
+              ["HOLD", "Both arms raised in front, palms facing the crowd, held steady. Only on instruction. Say: 'Please wait here'."]] },
+  { key: "s41-v02", lesson: "SMP 4.1", screen: "screen 2.2", title: "Noura shows STOP, GO-MOVE and HOLD at the queue entrance", media: "smp41-v02-signals.mp4",
+    signals: [["STOP", "One arm straight out in front, open palm towards the people, held still."],
+              ["GO-MOVE", "An open-hand sweep of the whole arm towards the route, repeated."],
+              ["HOLD", "Both arms raised in front, palms facing the crowd, held steady."]] },
+  { key: "s41-v03", lesson: "SMP 4.1", screen: "screen 4.1", title: "Faisal at the Gate 4 queue: STOP, GO-MOVE into lane 2, then HOLD", media: "smp41-v03-queue-signals.mp4",
+    signals: [["STOP", "One arm forward, open palm, held."], ["GO-MOVE", "Arm sweeps towards lane 2, repeated; the whole arm shows the way, never one finger."],
+              ["HOLD", "Both palms forward, steady, only after an instruction."]] },
+  { key: "s41-v11", lesson: "SMP 4.1", screen: "screen 6.15", title: "Release a held queue a few at a time", media: "smp41-v11-dp3-release.mp4",
+    signals: [["HOLD (one palm)", "One palm lowered towards the people still waiting."], ["GO-MOVE", "The other arm sweeps, hand open, letting a few people at a time into lane 1, then lane 2."]] } ]},
+ { group: "SMP 8.1 · Egress, stop and hold", items: [
+  { key: "s81-stop", lesson: "SMP 8.1", screen: "screen 2.3", title: "Noura gives the STOP signal", media: "smp81-s4-stop.jpg", kind: "img",
+    signals: [["STOP", "Open hand, arm forward, facing the people."]] } ]},
+ { group: "SMP 9.1 · Radio, escalation and reporting: signals between marshals (the client's approved set)", items: [
+  { key: "s91-a08", lesson: "SMP 9.1", screen: "screen 5.2", title: "All six signals, with the colleague answering", media: "smp91-a08-hand-signals.mp4",
+    signals: [["Emergency", "Both arms crossed above the head, from the wrist."],
+              ["Need supervisor", "Palm opens and closes at 3-second intervals until the receiver answers with the same signal (COPY)."],
+              ["Area full / Close entry", "Fists bumped against each other on top of the head, repeatedly."],
+              ["All clear / OK", "One thumb up, and the same sign back."],
+              ["Need relief / Break", "A T made with both hands above the head."],
+              ["Release", "Both thumbs up, again and again: open an area that was on hold or lock, slowly and under control."]] },
+  { key: "s91-v09", lesson: "SMP 9.1", screen: "screen 6.1", title: "Majed signals Noura for help with an unwell fan; she answers and passes it on", media: "smp91-v09-signal-for-help.mp4",
+    signals: [["Need supervisor", "Palm opens and closes at 3-second intervals until the receiver answers with the same signal (COPY)."]] } ]},
+ { group: "SMP 13.1 · Traffic, crossings and parking: vehicle signals to drivers", items: [
+  { key: "s131-stop", lesson: "SMP 13.1", screen: "screen 5.1", title: "STOP", media: "smp131-v02-sig-stop.mp4",
+    signals: [["STOP", "One arm extended straight forwards, with open palm facing the driver."]], known: "Known issue (#65): the hand is raised beside the head, not straight forwards. A new clip is being made." },
+  { key: "s131-estop", lesson: "SMP 13.1", screen: "screen 5.1", title: "EMERGENCY STOP", media: "smp131-v02-sig-emergency-stop.mp4",
+    signals: [["EMERGENCY STOP", "Both arms fully extended, open palms facing the driver."]], known: "Known issue (#65): hands are up at the shoulders with elbows bent, not fully extended. A new clip is being made." },
+  { key: "s131-stophere", lesson: "SMP 13.1", screen: "screen 5.1", title: "STOP HERE", media: "smp131-v02-sig-stop-here.mp4",
+    signals: [["STOP HERE", "Hands apart, closing to show the distance left; fully cross the arms to show the stop."]] },
+  { key: "s131-forward", lesson: "SMP 13.1", screen: "screen 5.1", title: "COME FORWARD", media: "smp131-v02-sig-come-forward.mp4",
+    signals: [["COME FORWARD", "Both hands at chest height, palms facing towards you, slow beckoning motion."]] },
+  { key: "s131-slow", lesson: "SMP 13.1", screen: "screen 5.1", title: "SLOW DOWN", media: "smp131-v02-sig-slow-down.mp4",
+    signals: [["SLOW DOWN", "Arm extended out to the side, palm facing down, moving slowly up and down."]] },
+  { key: "s131-turn", lesson: "SMP 13.1", screen: "screen 5.1", title: "TURN", media: "smp131-v02-sig-turn.mp4",
+    signals: [["TURN", "Point the direction of travel with the arm on that side extended, and beckon in that direction with the other hand."]] } ]}
+];
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbx5ytdUHl8PepmGOV02BoWL37g7uhVUnxN7YMKvlL85H3Ashe8Sx98be2LI5gApxkDK/exec", SHEET_COURSE = 'smp-hand-signals-check';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ALL = ITEMS.flatMap(g => g.items);
+let COMS = [], PICK = {}, n = 0;
+document.getElementById('list').innerHTML = ITEMS.map(g => `<h2>${esc(g.group)}</h2>` + g.items.map(it => { n++; return `
+  <article id="${it.key}">
+    <div class="meta"><span class="num">${n}</span><span class="lesson">${esc(it.lesson)}</span><span>${esc(it.screen)}</span><span class="tag" data-status="${it.key}">Not checked yet</span></div>
+    <h3>${esc(it.title)}</h3>
+    <div class="cols">
+      <div>${it.kind === 'img' ? `<img src="media/${it.media}" alt="${esc(it.title)}" loading="lazy">`
+        : `<video src="media/${it.media}" controls playsinline preload="metadata"></video>`}</div>
+      <div><div class="label">What the lesson teaches</div>
+        <ul class="sig">${it.signals.map(([nm, d]) => `<li><b>${esc(nm)}:</b> ${esc(d)}</li>`).join('')}</ul>
+        ${it.known ? `<p class="known">${esc(it.known)}</p>` : ''}</div>
+    </div>
+    <div class="verdict" data-key="${it.key}" data-label="${esc(it.lesson + ' ' + it.screen + ' · ' + it.title)}">
+      <div class="thread"></div>
+      <div class="choices"><button data-v="ok" aria-pressed="false">Correct</button><button data-v="change" aria-pressed="false">Needs change</button></div>
+      <textarea placeholder="What should change? (optional when it is correct)" aria-label="Comment"></textarea>
+      <div class="row"><input class="nm" placeholder="Your name" aria-label="Your name" style="max-width:220px"><button class="send">Send</button><span class="note"></span></div>
+    </div>
+  </article>`; }).join('')).join('');
+try { const nm = localStorage.getItem('hs-name') || ''; document.querySelectorAll('.nm').forEach(i => i.value = nm); } catch (e) {}
+function paint() {
+  let ok = 0, ch = 0;
+  ALL.forEach(it => {
+    const list = COMS.filter(c => c.screen === it.key).sort((a, b) => a.at - b.at);
+    const box = document.querySelector(`.verdict[data-key="${it.key}"] .thread`);
+    box.innerHTML = list.map(() => `<div class="msg"><div class="who"></div><div class="t"></div></div>`).join('');
+    list.forEach((c, i) => { const m = box.children[i];
+      m.querySelector('.who').textContent = (c.reviewer || 'Someone') + ' · ' + (c.kind === 'Correct' ? 'Correct' : c.kind === 'Needs change' ? 'Needs change' : 'Comment') + ' · ' + new Date(c.at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      m.querySelector('.t').textContent = c.comment || ''; });
+    const last = [...list].reverse().find(c => c.kind === 'Correct' || c.kind === 'Needs change');
+    const tag = document.querySelector(`[data-status="${it.key}"]`);
+    tag.className = 'tag' + (last ? (last.kind === 'Correct' ? ' ok' : ' bad') : '');
+    tag.textContent = last ? last.kind : 'Not checked yet';
+    if (last) { last.kind === 'Correct' ? ok++ : ch++; }
+  });
+  document.getElementById('tally').innerHTML = [[ALL.length, 'clips and pictures'], [ok, 'correct'], [ch, 'need change'], [ALL.length - ok - ch, 'not checked yet']]
+    .map(([v, t]) => `<div><b>${v}</b><span>${t}</span></div>`).join('');
+}
+document.addEventListener('click', async e => {
+  const ch = e.target.closest('.choices button');
+  if (ch) { const v = ch.closest('.verdict'); PICK[v.dataset.key] = ch.dataset.v;
+    v.querySelectorAll('.choices button').forEach(b => b.setAttribute('aria-pressed', b === ch)); return; }
+  const s = e.target.closest('.send'); if (!s) return;
+  const v = s.closest('.verdict'), key = v.dataset.key, note = v.querySelector('.note');
+  const text = v.querySelector('textarea').value.trim(), name = v.querySelector('.nm').value.trim(), pick = PICK[key];
+  const say = (m, err) => { note.textContent = m; note.classList.toggle('err', !!err); };
+  if (!pick && !text) return say('Tap Correct or Needs change first.', true);
+  if (pick === 'change' && !text) return say('Say what should change.', true);
+  if (!name) return say('Add your name so we know who checked it.', true);
+  try { localStorage.setItem('hs-name', name); } catch (e) {}
+  s.disabled = true; say('Saving…');
+  const kind = pick === 'ok' ? 'Correct' : pick === 'change' ? 'Needs change' : 'Comment';
+  const c = { id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8), course: SHEET_COURSE, screen: key, screen_no: '',
+    lesson: v.dataset.label, screen_type: 'hand-signal-check', heading: v.dataset.label, language: 'en', kind,
+    comment: (text || kind).slice(0, 4000), reviewer: name.slice(0, 80), saved_at: new Date().toISOString() };
+  try {
+    const r = await fetch(SHEET_URL, { method: 'POST', body: JSON.stringify({ action: 'add', comment: c }) });
+    const d = await r.json(); if (!d.ok) throw new Error(d.error || 'not saved');
+    COMS.push(Object.assign({}, c, { at: Date.now() })); v.querySelector('textarea').value = ''; delete PICK[key];
+    v.querySelectorAll('.choices button').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    say('Saved. Thank you.'); paint();
+  } catch (err) { say('Could not save. Check your connection and try again.', true); }
+  s.disabled = false;
+});
+async function load() {
+  try {
+    const r = await fetch(SHEET_URL + '?course=' + encodeURIComponent(SHEET_COURSE) + '&t=' + Date.now(), { cache: 'no-store' });
+    const d = await r.json(); if (!d.ok) return;
+    const got = (d.comments || []).map(x => ({ id: String(x.id), screen: String(x.screen || ''), kind: String(x.kind || ''), comment: String(x.comment || ''),
+      reviewer: String(x.reviewer || ''), at: Date.parse(x.saved_at) || 0 }));
+    const local = COMS.filter(c => !got.some(x => x.id === c.id) && Date.now() - c.at < 120000);
+    COMS = got.concat(local); paint();
+  } catch (e) {}
+}
+paint(); load(); setInterval(() => { if (!document.hidden) load(); }, 60000);
+</script>
+</body>
+</html>
